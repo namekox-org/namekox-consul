@@ -37,7 +37,7 @@ class ConsulHelper(Dependency):
     def setup_register(self):
         r_options = self.roptions.copy()
         host_addr = self.get_host_byname()
-        host_name = '{}/{}'.format(
+        serv_name = '{}/{}'.format(
             DEFAULT_CONSUL_SERVICE_ROOT_PATH,
             self.container.service_cls.name
         )
@@ -46,7 +46,7 @@ class ConsulHelper(Dependency):
         r_options.setdefault('address', host_addr or '127.0.0.1')
         check = consul.Check().tcp(r_options['address'], r_options['port'], '5s', '10s', '10s')
         r_options.setdefault('check', check)
-        self.instance.agent.service.register(host_name, **r_options)
+        self.instance.agent.service.register(serv_name, **r_options)
 
     def setup_allotter(self):
         self.allotter.set(self.instance)
