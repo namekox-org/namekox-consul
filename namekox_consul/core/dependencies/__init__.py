@@ -35,18 +35,18 @@ class ConsulHelper(Dependency):
         return ignore_exception(socket.gethostbyname)(name)
 
     def setup_register(self):
-        config = self.roptions.copy()
-        s_host = self.get_host_byname()
-        s_name = '{}/{}'.format(
+        r_options = self.roptions.copy()
+        host_addr = self.get_host_byname()
+        host_name = '{}/{}'.format(
             DEFAULT_CONSUL_SERVICE_ROOT_PATH,
             self.container.service_cls.name
         )
-        config.setdefault('port', 80)
-        config.setdefault('service_id', self.serverid)
-        config.setdefault('address', s_host or '127.0.0.1')
-        check = consul.Check().tcp(config['address'], config['port'], '5s', '10s', '10s')
-        config.setdefault('check', check)
-        self.instance.agent.service.register(s_name, **config)
+        r_options.setdefault('port', 80)
+        r_options.setdefault('service_id', self.serverid)
+        r_options.setdefault('address', host_addr or '127.0.0.1')
+        check = consul.Check().tcp(r_options['address'], r_options['port'], '5s', '10s', '10s')
+        r_options.setdefault('check', check)
+        self.instance.agent.service.register(host_name, **r_options)
 
     def setup_allotter(self):
         self.allotter.set(self.instance)
