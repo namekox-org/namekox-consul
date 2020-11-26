@@ -9,7 +9,6 @@ import time
 
 from itertools import cycle
 from namekox_core.core.generator import generator_md5
-from namekox_consul.constants import DEFAULT_CONSUL_SERVICE_ROOT_PATH
 
 
 class Allotter(object):
@@ -19,7 +18,7 @@ class Allotter(object):
         self.ttl = ttl
 
     def get(self, name):
-        name = '{}/{}'.format(DEFAULT_CONSUL_SERVICE_ROOT_PATH, name)
+        name = self.sdepd.gen_serv_name(name)
         data = self.sdepd.instance.catalog.service(name)[1]
         if not data:
             self.iters.pop(name, None)
@@ -29,8 +28,7 @@ class Allotter(object):
             self.iters[name] = [dmd5, cycle(data), time.time()]
         else:
             smd5, siter, stime = self.iters[name]
-            if dmd5 != smd5 or time.time() - stime >= self.ttl:
-                self.iters[name] = [dmd5, cycle(data), time.time()]
+            self.iters[name] = [dmd5, cycle(data), time.time()] if (dmd5 != smd5 or time.time() - stime >= self.ttl) else self.iters[name]
         return self.iters[name][1].next()
 
     def set(self, sdepd):

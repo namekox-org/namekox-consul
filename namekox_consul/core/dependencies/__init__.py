@@ -34,13 +34,14 @@ class ConsulHelper(Dependency):
         name = socket.gethostname()
         return ignore_exception(socket.gethostbyname)(name)
 
+    @staticmethod
+    def gen_serv_name(name):
+        return '{}/{}'.format(DEFAULT_CONSUL_SERVICE_ROOT_PATH, name)
+
     def setup_register(self):
         r_options = self.roptions.copy()
         host_addr = self.get_host_byname()
-        serv_name = '{}/{}'.format(
-            DEFAULT_CONSUL_SERVICE_ROOT_PATH,
-            self.container.service_cls.name
-        )
+        serv_name = self.gen_serv_name(self.container.service_cls.name)
         r_options.setdefault('port', 80)
         r_options.setdefault('service_id', self.serverid)
         r_options.setdefault('address', host_addr or '127.0.0.1')
