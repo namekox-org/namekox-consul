@@ -13,14 +13,14 @@ from namekox_consul.constants import DEFAULT_CONSUL_SERVICE_ROOT_PATH
 
 
 class Allotter(object):
-    def __init__(self, inst=None, ttl=36000):
+    def __init__(self, sdepd=None, ttl=36000):
         self.iters = {}
+        self.sdepd = sdepd
         self.ttl = ttl
-        self.cinst = inst
 
     def get(self, name):
         name = '{}/{}'.format(DEFAULT_CONSUL_SERVICE_ROOT_PATH, name)
-        data = self.cinst.catalog.service(name)[1]
+        data = self.sdepd.instance.catalog.service(name)[1]
         if not data:
             self.iters.pop(name, None)
             raise KeyError(name)
@@ -33,6 +33,6 @@ class Allotter(object):
                 self.iters[name] = [dmd5, cycle(data), time.time()]
         return self.iters[name][1].next()
 
-    def set(self, inst):
+    def set(self, sdepd):
         self.iters = {}
-        self.cinst = inst
+        self.sdepd = sdepd

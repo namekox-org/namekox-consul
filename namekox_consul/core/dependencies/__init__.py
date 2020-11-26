@@ -49,7 +49,7 @@ class ConsulHelper(Dependency):
         self.instance.agent.service.register(serv_name, **r_options)
 
     def setup_allotter(self):
-        self.allotter.set(self.instance)
+        self.allotter.set(self)
 
     def setup(self):
         config = self.configs.get(self.dbname, {}).copy()
