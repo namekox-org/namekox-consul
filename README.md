@@ -55,7 +55,6 @@ WEBSERVER:
 2020-11-25 18:58:42,310 DEBUG starting service ping dependencies [ping:namekox_consul.core.dependencies.ConsulHelper:consul]
 2020-11-25 18:58:42,329 DEBUG Starting new HTTP connection (1): 127.0.0.1:8500
 2020-11-25 18:58:42,332 DEBUG http://127.0.0.1:8500 "PUT /v1/agent/service/register HTTP/1.1" 200 0
-2020-11-25 18:58:42,345 DEBUG http://127.0.0.1:8500 "PUT /v1/agent/service/register HTTP/1.1" 200 0
 2020-11-25 18:58:42,346 DEBUG service ping dependencies [ping:namekox_consul.core.dependencies.ConsulHelper:consul] started
 2020-11-25 18:58:42,347 DEBUG services ['ping'] started
 2020-11-25 18:58:46,462 DEBUG spawn manage thread handle ping:namekox_webserver.core.entrypoints.app.server:handle_request(args=(<eventlet.greenio.base.GreenSocket object at 0x1106ffdd0>, ('127.0.0.1', 49505)), kwargs={}, tid=handle_request)

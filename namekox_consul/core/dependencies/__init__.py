@@ -55,7 +55,6 @@ class ConsulHelper(Dependency):
         config = self.configs.get(self.dbname, {}).copy()
         [config.update({k: v}) for k, v in six.iteritems(self.coptions)]
         self.instance = consul.Consul(**config)
-        self.setup_register()
 
     def start(self):
         self.instance and self.setup_register()
