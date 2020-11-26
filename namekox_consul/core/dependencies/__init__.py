@@ -62,4 +62,4 @@ class ConsulHelper(Dependency):
         self.allotter and self.setup_allotter()
 
     def stop(self):
-        self.instance and self.instance.agent.service.deregister(self.serverid)
+        self.instance and ignore_exception(self.instance.agent.service.deregister)(self.serverid)
