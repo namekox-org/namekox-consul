@@ -11,19 +11,19 @@ import socket
 from namekox_consul.constants import CONSUL_CONFIG_KEY
 from namekox_core.core.generator import generator_uuid
 from namekox_core.core.service.dependency import Dependency
-from namekox_consul.constants import DEFAULT_CONSUL_SERVICE_ROOT_PATH
 from namekox_core.core.friendly import AsLazyProperty, ignore_exception
 
 
 class ConsulHelper(Dependency):
-    def __init__(self, dbname, serverid=None, allotter=None, coptions=None, roptions=None):
+    def __init__(self, dbname, serverid=None, watching=None, allotter=None, coptions=None, roptions=None):
         self.instance = None
         self.dbname = dbname
+        self.watching = watching
         self.allotter = allotter
         self.coptions = coptions or {}
         self.roptions = roptions or {}
         self.serverid = serverid or generator_uuid()
-        super(ConsulHelper, self).__init__(dbname, serverid, allotter, coptions, roptions)
+        super(ConsulHelper, self).__init__(dbname, serverid, watching, allotter, coptions, roptions)
 
     @AsLazyProperty
     def configs(self):
@@ -34,9 +34,8 @@ class ConsulHelper(Dependency):
         name = socket.gethostname()
         return ignore_exception(socket.gethostbyname)(name)
 
-    @staticmethod
-    def gen_serv_name(name):
-        return '{}/{}'.format(DEFAULT_CONSUL_SERVICE_ROOT_PATH, name)
+    def gen_serv_name(self, name):
+        return '{}/{}'.format(self.watching, name)
 
     def setup_register(self):
         r_options = self.roptions.copy()
@@ -56,9 +55,10 @@ class ConsulHelper(Dependency):
         config = self.configs.get(self.dbname, {}).copy()
         [config.update({k: v}) for k, v in six.iteritems(self.coptions)]
         self.instance = consul.Consul(**config)
+        self.coptions = config
 
     def start(self):
-        self.instance and self.setup_register()
+        self.watching and self.setup_register()
         self.allotter and self.setup_allotter()
 
     def stop(self):
