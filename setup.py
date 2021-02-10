@@ -11,11 +11,11 @@ from setuptools import find_packages, setup
 
 
 curdir = os.path.abspath(os.path.dirname(__file__))
-readme = open(os.path.join(curdir, 'README.md'), 'rb', 'utf-8').read()
+readme = open(os.path.join(curdir, 'READIT.md'), 'rb', 'utf-8').read()
 
 setup(
     name='namekox-consul',
-    version='0.0.9',
+    version='0.0.10',
     description='namekox consul',
     long_description_content_type='text/markdown',
     long_description=readme,
