@@ -17,14 +17,14 @@ readme = open(os.path.join(curdir, 'READIT.md'), 'rb', 'utf-8').read()
 
 setup(
     name='namekox-consul',
-    version='0.0.11',
+    version='0.0.12',
     description='namekox consul',
     long_description_content_type='text/markdown',
     long_description=readme,
     author='forcemain',
     url='https://forcemain.github.io/',
     packages=find_packages(exclude=['test', 'test.*']),
-    install_requires=["namekox-core>=0.0.1", "python-consul>=1.1.0"],
+    install_requires=["namekox-core", "python-consul==1.1.0"],
     zip_safe=True,
     license='Apache License, Version 2.0',
     classifiers=[
